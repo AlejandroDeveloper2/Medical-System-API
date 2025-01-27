@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "89646fb8-7680-41d7-a61b-1f9f60fb8df6",
+		"name": "MEDICAL_SYSTEM_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13757208"
+	},
+	"item": [
+		{
+			"name": "Doctor Module",
+			"item": [
+				{
+					"name": "POST DOCTOR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Diego Fernando\",\r\n    \"lastName\": \"Bonilla\",\r\n    \"email\": \"diegoFer@gmail.com\",\r\n    \"phone\": \"+57 3125083199\",\r\n    \"specialty\": \"Médico Fisioterapeuta\",\r\n    \"address\": \"Cra 10A #30-05\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Doctor Microservice Api}}/doctors",
+							"host": [
+								"{{Doctor Microservice Api}}"
+							],
+							"path": [
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DOCTOR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Doctor Microservice Api}}/doctors/1",
+							"host": [
+								"{{Doctor Microservice Api}}"
+							],
+							"path": [
+								"doctors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DOCTORS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Doctor Microservice Api}}/doctors",
+							"host": [
+								"{{Doctor Microservice Api}}"
+							],
+							"path": [
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE DOCTOR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Diego Alejandro (Editado)\",\r\n    \"lastName\": \"Diaz\",\r\n    \"email\": \"diego@gmail.com\",\r\n    \"phone\": \"+57 3105073199\",\r\n    \"specialty\": \"Médico general\",\r\n    \"address\": \"Cra 10A #29-05\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Doctor Microservice Api}}/doctors/13",
+							"host": [
+								"{{Doctor Microservice Api}}"
+							],
+							"path": [
+								"doctors",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE DOCTOR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{Doctor Microservice Api}}/doctors/1",
+							"host": [
+								"{{Doctor Microservice Api}}"
+							],
+							"path": [
+								"doctors",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth Module",
+			"item": [
+				{
+					"name": "POST USER ACCOUNT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alejo@gmail.com\",\r\n    \"userName\": \"alejo98\",\r\n    \"name\": \"Alejandro\",\r\n    \"lastName\": \"Diaz\",\r\n    \"password\": \"alejo123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Auth Microservice Api}}/auth/register",
+							"host": [
+								"{{Auth Microservice Api}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"alejo@gmail.com\",\r\n    \"password\":\"alejo123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Auth Microservice Api}}/auth/login",
+							"host": [
+								"{{Auth Microservice Api}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST VERIFY TOKEN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Auth Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{Auth Microservice Api}}/auth/verify",
+							"host": [
+								"{{Auth Microservice Api}}"
+							],
+							"path": [
+								"auth",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

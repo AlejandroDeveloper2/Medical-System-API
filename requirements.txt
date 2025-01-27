@@ -1,0 +1,23 @@
+Tecnologías: 
+Backend: Node.js con Express 
+Base de datos: MySQL o PostgreSQL y / o mongodb
+Autenticación: JWT 
+Pruebas: Jest
+
+Desarrollo de la API Medicos: 
+POST: Crear un nuevo. 
+GET: Consultar (por ID o todos). 
+PUT: Actualizar la información. 
+DELETE: Eliminar.
+
+Documentación de la API con Swagger
+Pruebas con Postman. 
+
+Pruebas unitarias para asegurar el correcto funcionamiento de los endpoints.
+
+npx prisma migrate dev --name init
+npx jest --clearCache
+npx prisma init
+npx prisma generate
+
+Prompt:Hola chat gpt estoy creando dos microservicios en node y express y typescript un microservio es una api rest para un crud de medicos   y la otra es el microservicio de authentification que se encarga de autentificar los usuarios. Como podria protejer las rutas para hacer las operaciones Crud en el microservicio de medicos con un middleware que esta el microservicio de auth

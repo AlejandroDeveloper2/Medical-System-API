@@ -1,0 +1,282 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Auth Api",
+    "description": "API REST para la autentificación de usuarios.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Diego Alejandro Díaz Bonilla",
+      "email": "diazalejandro123456@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Crear un nuevo usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario creado exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/User" },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Cuenta creada correctamente!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida o usuario ya registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Faltan datos del usuario que son obligatorios! / ¡Ya existe un usuario con ese nombre de usuario o/y email!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Iniciar sesión de usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "alejo@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "alejo123"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inicio de sesión exitoso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessionToken": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImFsZWpvQGdtYWlsLmNvbSIsImlhdCI6MTczNzg1MDU4OSwiZXhwIjoxNzM4MDIzMzg5fQ.AV8w9xJKJ6cmzn_v57-vDawwRFCtL_IwmPv0yoGWiJE",
+                      "description": "JWT token para autenticación"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Contraseña incorrecta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡La contraseña ingresada es incorrecta!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuario no encontrado (email incorrecto)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡No existe un usuario con esas credenciales!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/verify": {
+      "post": {
+        "summary": "Verificar validez de un token",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token válido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "alejo@gmail.com",
+                      "description": "Muestra el token decodificado"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token no proveeido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "alejo@gmail.com"
+          },
+          "userName": {
+            "type": "string",
+            "example": "alejo98"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alejandro"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Diaz"
+          },
+          "password": {
+            "type": "string",
+            "example": "alejo123",
+            "format": "password"
+          }
+        },
+        "required": ["email", "userName", "name", "lastName", "password"]
+      }
+    }
+  }
+}

@@ -1,0 +1,623 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Doctors API",
+    "description": "API REST para la gestión de médicos.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Diego Alejandro Díaz Bonilla",
+      "email": "diazalejandro123456@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Servidor local de desarrollo"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Doctor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "specialty": {
+            "type": "string",
+            "example": "Cardiologist"
+          },
+          "address": {
+            "type": "string",
+            "example": "123 Main Street"
+          }
+        },
+        "required": [
+          "name",
+          "lastName",
+          "email",
+          "phone",
+          "specialty",
+          "address"
+        ]
+      }
+    }
+  },
+  "paths": {
+    "/doctors": {
+      "get": {
+        "summary": "Obtener lista de médicos",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de médicos obtenida con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Doctor"
+                      },
+                      "description": "datos obtenidos"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Médico agregado correctamente!",
+                      "description": "mensaje de exito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear un nuevo médico",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Datos del médico a crear",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Doctor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Médico creado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Doctor",
+                      "description": "datos obtenidos"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Médico agregado correctamente",
+                      "description": "mensaje de exito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida o médico ya registrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Faltan datos del médico que son obligatorios! / ¡Ya existe un medico con ese correo o teléfono en la base de datos!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/doctors/{id}": {
+      "get": {
+        "summary": "Obtener información de un médico",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del médico",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico obtenido con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Doctor",
+                      "description": "datos obtenidos"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Perfil del médico obtenido correctamente!",
+                      "description": "mensaje de exito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Médico no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Médico no fue encontrado, verifique si el Id es el correcto!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar información de un médico",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del médico",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Datos del médico a actualizar",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Doctor"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Médico actualizado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Doctor",
+                      "description": "datos actualizados"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Perfil del médico actualizado correctamente!",
+                      "description": "mensaje de exito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitud inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Faltan datos del médico que son obligatorios!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Médico no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Médico no fue encontrado, verifique si el Id es el correcto!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un médico",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID del médico",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Médico eliminado con éxito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/Doctor",
+                      "description": "datos eliminados"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Perfil del médico eliminado correctamente!",
+                      "description": "mensaje de exito"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token no proveeido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Token invalido o expirado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Token invalido!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Médico no encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": null,
+                      "description": "datos obtenidos en este caso null"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "¡Médico no fue encontrado, verifique si el Id es el correcto!",
+                      "description": "mensaje de error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

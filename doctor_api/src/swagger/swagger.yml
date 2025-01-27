@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Doctors API
+  description: API REST para la gestión de médicos.
+  version: 1.0.0
+  contact:
+    name: Diego Alejandro Díaz Bonilla
+    email: diazalejandro123456@gmail.com
+servers:
+  - url: http://localhost:3001/api
+    description: Servidor local de desarrollo
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Doctor:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john.doe@example.com
+        phone:
+          type: string
+          example: "+1234567890"
+        specialty:
+          type: string
+          example: Cardiologist
+        address:
+          type: string
+          example: 123 Main Street
+      required:
+        - name
+        - lastName
+        - email
+        - specialty
+paths:
+  /doctors:
+    get:
+      summary: Obtener lista de médicos
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de médicos obtenida con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Doctor'
+        '401':
+          description: No autorizado
+    post:
+      summary: Crear un nuevo médico
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Datos del médico a crear
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+      responses:
+        '201':
+          description: Médico creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autorizado
+  /doctors/{id}:
+    get:
+      summary: Obtener información de un médico
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del médico
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Médico obtenido con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '404':
+          description: Médico no encontrado
+        '401':
+          description: No autorizado
+    put:
+      summary: Actualizar información de un médico
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del médico
+          schema:
+            type: string
+      requestBody:
+        description: Datos del médico a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Doctor'
+      responses:
+        '200':
+          description: Médico actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doctor'
+        '404':
+          description: Médico no encontrado
+        '400':
+          description: Solicitud inválida
+        '401':
+          description: No autorizado
+    delete:
+      summary: Eliminar un médico
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del médico
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Médico eliminado con éxito
+        '404':
+          description: Médico no encontrado
+        '401':
+          description: No autorizado
